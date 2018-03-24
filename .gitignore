@@ -14,7 +14,7 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
-# Windows shortcuts
+# Windows shortcutss
 *.lnk
 
 # =========================
@@ -45,3 +45,6 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+##ignore this file##
+/node_modules/

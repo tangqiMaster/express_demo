@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var article_dbt = require('../Dbt/article_dbt.js');
 var article_server = {};
 
 
@@ -25,13 +26,23 @@ function handleData(flag,send_data){
 // 获取文章列表
 article_server.get_article_list = function(req,callbakc){
 	var promise = new Promise(function(resolve, reject){        //做一些异步操作
-		var pro_data = null;
-		if(req.userName && req.password){
-			pro_data = handleData(true,req);
-		}else{
-			pro_data = handleData(false,req);
-		};
-        resolve(pro_data);
+		article_dbt.get_article_list(req)
+		.then(function(pro_data){
+			resolve(pro_data);
+		});
+    });
+    return promise;
+};
+
+
+
+// 添加文章列表
+article_server.add_article_list = function(req,callbakc){
+	var promise = new Promise(function(resolve, reject){        //做一些异步操作
+		article_dbt.add_article_list(req)
+		.then(function(pro_data){
+			resolve(pro_data);
+		});
     });
     return promise;
 };

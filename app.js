@@ -8,6 +8,7 @@ var birds = require('./birds');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var articleRouter = require('./routes/article');
+// var connection = require('./Dbt/connection');
 
 var app = express();
 
