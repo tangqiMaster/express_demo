@@ -3,26 +3,6 @@ var router = express.Router();
 var article_dbt = require('../Dbt/article_dbt.js');
 var article_server = {};
 
-
-
-function handleData(flag,send_data){
-	var data = null;
-	if(flag){
-		data = {
-			code : 0,
-			data :send_data,
-			msg : ""
-		}
-	}else{
-		data = {
-			code : 1001,
-			data : {},
-			msg : "请求参数错误！"
-		}
-	};
-	return data;
-}
-
 // 获取文章列表
 article_server.get_article_list = function(req,callbakc){
 	var promise = new Promise(function(resolve, reject){        //做一些异步操作
@@ -37,9 +17,31 @@ article_server.get_article_list = function(req,callbakc){
 
 
 // 添加文章列表
-article_server.add_article_list = function(req,callbakc){
+article_server.add_article = function(req,callbakc){
 	var promise = new Promise(function(resolve, reject){        //做一些异步操作
-		article_dbt.add_article_list(req)
+		article_dbt.add_article(req)
+		.then(function(pro_data){
+			resolve(pro_data);
+		});
+    });
+    return promise;
+};
+
+// 编辑文章列表
+article_server.edit_article = function(req,callbakc){
+	var promise = new Promise(function(resolve, reject){        //做一些异步操作
+		article_dbt.edit_article(req)
+		.then(function(pro_data){
+			resolve(pro_data);
+		});
+    });
+    return promise;
+};
+
+// 删除文章列表
+article_server.del_article = function(req,callbakc){
+	var promise = new Promise(function(resolve, reject){        //做一些异步操作
+		article_dbt.del_article(req)
 		.then(function(pro_data){
 			resolve(pro_data);
 		});
