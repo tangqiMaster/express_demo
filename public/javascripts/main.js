@@ -30,16 +30,23 @@ $(document).ready(function(){
 	// 关闭添加用户模态框
 	$('#addUserModal').on('hidden.bs.modal', function (e) {
 	  	if(closeAddFlag){
-	  		alert("添加用户成功！")
-			getUserList();
+	  		$.message('添加用户成功！');
+	  		var data = {
+	  			current_page : current_page,
+	  			per_page : per_page
+	  		};
+			getUserList(data);
 	  	};
 	});
 
 	// 关闭编辑用户模态框
 	$('#editUserModal').on('hidden.bs.modal', function (e) {
 	  	if(closeEditFlag){
-	  		alert("编辑用户成功！")
-			getUserList();
+	  		var data = {
+	  			current_page : current_page,
+	  			per_page : per_page
+	  		};
+			getUserList(data);
 	  	};
 	});
 
@@ -68,7 +75,10 @@ $(document).ready(function(){
 				closeAddFlag = true;
 				$('#addUserModal').modal('hide');
 			}else{
-				alert(res.msg)
+	  			$.message({
+	  				message : res.msg,
+	  				type:'error'
+	  			});
 			}
 		});
 	});
@@ -105,9 +115,13 @@ $(document).ready(function(){
 		$.post("/article/edit_article",data,function(res){
 			if(res.code == 0){
 				closeEditFlag = true;
+				$.message('编辑用户成功！');
 				$('#editUserModal').modal('hide');
 			}else{
-				alert(res.msg)
+				$.message({
+	  				message : res.msg,
+	  				type:'error'
+	  			});
 			}
 		});
 	});
@@ -120,10 +134,16 @@ $(document).ready(function(){
 		}
 		$.post("/article/del_article",data,function(res){
 			if(res.code == 0){
-				alert("删除成功！");
+				$.message({
+	  				message : "删除成功！",
+	  				type:'success'
+	  			});
 				getUserList();
 			}else{
-				alert(res.msg)
+				$.message({
+	  				message :res.msg,
+	  				type:'error'
+	  			});
 			}
 		});
 	});
@@ -134,11 +154,13 @@ $(document).ready(function(){
 		$.post("/article/get_article_list",data,function(res){
 			if(res.code == 0){
 				usersList = res.data.data;
+				per_page = res.data.per_page;
+				total = res.data.total;
 				$("#pagination3").pagination({
 					currentPage: Number(data.current_page),// 当前页数
-					totalPage: 16,// 总页数
+					totalPage: getTotal(),// 总页数
 					isShow: true,// 是否显示首尾页
-					count: 7,// 显示个数
+					count: 5,// 显示个数
 					homePageText: "首页",// 首页文本
 					endPageText: "尾页",// 尾页文本
 					prevPageText: "上一页",// 上一页文本
@@ -153,10 +175,21 @@ $(document).ready(function(){
 				});
 				renderUserList(usersList)
 			}else{
-				alert(res.msg)
+				$.message({
+	  				message :res.msg,
+	  				type:'error'
+	  			});
 			}
 		})
 	};
+
+	function getTotal(){
+		var a = parseInt(total/per_page);
+		if((total % per_page) > 0){
+			a = a + 1
+		};
+		return a
+	}
 
 	// 渲染用户列表
 	function renderUserList(data){
