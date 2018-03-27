@@ -128,17 +128,52 @@ $(document).ready(function(){
 
 	// 删除用户
 	$("#userTable").on("click",".delBtn",function(){
-		var id = $(this).attr("data");
-		var data = {
-			id : id
-		}
+		var self = this;
+		swal({
+			title: '',
+			text: "确定删除该用户？",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: '删除',
+			cancelButtonText: '取消',
+			confirmButtonClass: 'btn btn-success',
+			cancelButtonClass: 'btn btn-danger',
+			buttonsStyling: false
+		}).then(function(isConfirm) {
+			if (isConfirm === true) {
+				var id = $(self).attr("data");
+				var data = {
+					id : id
+				};
+				delUserSub(data);
+			} else if (isConfirm === false) {
+				$.message({
+					message : "已取消删除",
+					type : "info"
+				})
+			} else {
+			// Esc, close button or outside click
+			// isConfirm is undefined
+			}
+		})
+		
+		
+	});
+
+	function delUserSub(data){
 		$.post("/article/del_article",data,function(res){
 			if(res.code == 0){
 				$.message({
 	  				message : "删除成功！",
 	  				type:'success'
 	  			});
-				getUserList();
+	  			var data = {
+					current_page : current_page,
+					per_page : per_page
+				};
+				getUserList(data);
 			}else{
 				$.message({
 	  				message :res.msg,
@@ -146,7 +181,7 @@ $(document).ready(function(){
 	  			});
 			}
 		});
-	});
+	};
 
 	// 获取用户列表
 	function getUserList(data){
