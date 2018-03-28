@@ -1,2 +1,3 @@
-# myblog
-node+vue博客
+# express_demo
+express框架搭载mysql完成后端增删查改功能，前端jq+boostrap调用后端Api实现用户的增删查改
+功能简单，界面简陋，但也是完成了基本的增删查改功能。
