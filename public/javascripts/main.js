@@ -70,7 +70,7 @@ $(document).ready(function(){
 			create_time : parseInt(new Date().getTime()/1000),
 			info : $("#addInfo").val()
 		};
-		$.post("/article/add_article",data,function(res){
+		$.post("/users/addUser",data,function(res){
 			if(res.code == 0){
 				closeAddFlag = true;
 				$('#addUserModal').modal('hide');
@@ -112,7 +112,7 @@ $(document).ready(function(){
 			password : $("#editPassword").val(),
 			info : $("#editInfo").val()
 		};
-		$.post("/article/edit_article",data,function(res){
+		$.post("/users/editUser",data,function(res){
 			if(res.code == 0){
 				closeEditFlag = true;
 				$.message('编辑用户成功！');
@@ -158,12 +158,11 @@ $(document).ready(function(){
 			// isConfirm is undefined
 			}
 		})
-		
-		
 	});
 
+	// 删除用户请求提交
 	function delUserSub(data){
-		$.post("/article/del_article",data,function(res){
+		$.post("/users/delUser",data,function(res){
 			if(res.code == 0){
 				$.message({
 	  				message : "删除成功！",
@@ -186,7 +185,7 @@ $(document).ready(function(){
 	// 获取用户列表
 	function getUserList(data){
 		closeAddFlag = false;
-		$.post("/article/get_article_list",data,function(res){
+		$.post("/users/getUserList",data,function(res){
 			if(res.code == 0){
 				usersList = res.data.data;
 				per_page = res.data.per_page;
@@ -218,6 +217,7 @@ $(document).ready(function(){
 		})
 	};
 
+	// 总页数
 	function getTotal(){
 		var a = parseInt(total/per_page);
 		if((total % per_page) > 0){
